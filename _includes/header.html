@@ -1,4 +1,5 @@
 <header class="site-header">
+<header class="site-header">
 
   <div class="wrapper">
 
@@ -15,8 +16,10 @@
 
       <div class="trigger">
         {% for page in site.pages %}
+          {% if page.url != "/404.html" %}
           {% if page.title %}
           <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+          {% endif %}
           {% endif %}
         {% endfor %}
       </div>
