@@ -1,0 +1,67 @@
+---
+layout: post
+title:  "lseek函数"
+date:   2012-04-26 10:50:12
+categories: Programing
+---
+lseek函数主要用来改变文件偏移量。
+
+函数原型为：
+{% highlight C %}
+#include <sys/types.h>
+#include <unistd.h>
+
+       off_t lseek(int fd, off_t offset, int whence);
+{% endhighlight %}
+
+其中whence有以下几种类型：
+
+<table class="table">
+<tbody>
+<tr>
+<td>SEEK_SET</td>
+<td>0</td>
+<td>偏移值是offset</td>
+</tr>
+<tr>
+<td>SEEK_CUR</td>
+<td>1</td>
+<td>偏移值是offset加当前位置</td>
+</tr>
+<tr>
+<td>SEEK_END</td>
+<td>2</td>
+<td>偏移值是offset加文件大小</td>
+</tr>
+</tbody>
+</table>
+
+不建议直接用数值。
+lseek函数允许把偏移值设定的比文件大，也就是在文件里留一个“洞”
+
+返回值：
+
+如果成功运行，lseek返回改变后的文件偏移，否则返回-1，并且输出相应的errno；
+
+其中errno 的值有：
+
+<table class="table">
+<tbody>
+<tr>
+<td>EBADF</td>
+<td>fd不是一个打开的文件描述符</td>
+</tr>
+<tr>
+<td>EINVAL</td>
+<td>whence不是上述三种值中的一个</td>
+</tr>
+<tr>
+<td>EOVERFLOW</td>
+<td>最终偏移值超出了off_t的表示范围</td>
+</tr>
+<tr>
+<td>ESPIPE</td>
+<td>fd是一个pipe,socket或者FIFO</td>
+</tr>
+</tbody>
+</table>

@@ -1,0 +1,156 @@
+---
+layout: post
+title:  "xargs命令"
+date:   2012-05-24 10:56:12
+categories: Linux
+---
+Linux中经常把一个命令的结果作为另一个命令的输入，这个过程中也许会遇到参数过长的问题，这个时候就需要xargs命令了。
+
+写的很挫。
+
+
+
+描述：xargs从标准输入读取项目，并用空格或者回车分隔它们，并且分别把变量传给接下来的命令(默认命令是 /bin/echo)。
+
+由于Unix文件系统里的文件名可以包含空格和换行符，所以默认情况下把这些文件名传给xargs是会出问题的，这个时候就需要用 -0 选项。用这个选项的时候，必须确保输入串是以空字串(null)结尾的。比如用 find 函数的时候 -print0选项就是这么干的。
+
+如果调用的函数以状态号255退出了，xargs 会立即退出，并且在标准错误里输出。
+
+选项：
+
+--arg-file=file
+
+-a file
+
+从文件里读取而不是标准输入。
+
+--null, -0
+
+用null作为分隔符而不是空格。
+
+--delimiter=delim
+
+-d delim
+
+以delim字符分隔输入，引号和反斜杠是不允许的。
+
+-E eof-str
+
+设置结束符，否则就没有结束符。
+
+--eof[=eof-str]
+
+-e [eof-str]
+
+和-E选项类似。
+
+--help
+
+输出帮助信息
+
+-I replace-str
+
+不懂
+
+--replace [=replace-str]
+
+-i [replace-str]
+
+还是不懂
+
+-L max-lines
+
+在一行里面最多使用max-lines 非空输入行。默认是1。
+
+-n max-args
+
+在一行里面最多使用max-args个参数。
+
+--interactive
+
+-p
+
+每次输入的时候提示用户。
+
+--no-run-if-empty
+
+-r
+
+如果输入里面不包含任何非空字符，那么不执行命令。
+
+--max-chars=max-chars
+
+-s max-chars
+
+一行里面使用最多max-chars 个字符，包括命令，参数和结束符。
+
+--varbose
+
+-t
+
+在执行变量之前将其输出到标准错误输出。
+
+--version
+
+输出版本号
+
+--show-limits
+
+输出限制。
+
+--exit
+
+-x
+
+当长度超出限制的时候退出。
+
+### 举例：
+
+
+{% highlight Bash shell scripts %}
+find /tmp -name core -type f -print | xargs /bin/rm -f
+{% endhighlight %}
+
+在/tmp目录下找文件名是core的文件并删除。当目录名含有空格或者换行符的时候会出错。
+
+{% highlight Bash shell scripts %}
+find /tmp -name core -type f -print0 | xargs -0 /bin/rm -f
+{% endhighlight %}
+
+这个可以修补目录名含有空格或者换行符的时候的错误。
+
+### 退出状态：
+
+<table class="table">
+<tbody>
+<tr>
+<td>0</td>
+<td>正常结束</td>
+</tr>
+<tr>
+<td>123</td>
+<td>调用的函数以1-125的结束号结束</td>
+</tr>
+<tr>
+<td>124</td>
+<td>调用的函数以255结束</td>
+</tr>
+<tr>
+<td>125</td>
+<td>命令被信号杀掉</td>
+</tr>
+<tr>
+<td>126</td>
+<td>命令不可执行</td>
+</tr>
+<tr>
+<td>127</td>
+<td>找不到命令</td>
+</tr>
+<tr>
+<td>1</td>
+<td>出现错误</td>
+</tr>
+</tbody>
+</table>
+ 
