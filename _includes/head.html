@@ -12,6 +12,17 @@
     <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     <script src="/assets/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/assets/prettify/prettify.css">
+    <script src="/assets/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    $("pre:not(.line-pre)").addClass("prettyprint");
+      prettyPrint();
+    });
+    </script>
+
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

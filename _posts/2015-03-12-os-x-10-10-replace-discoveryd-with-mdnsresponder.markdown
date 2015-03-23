@@ -24,7 +24,7 @@ mDNSResponder是用C编写的，并且是开源的。
 
 ### 首先你要有一个 OSX 10.9系统，将里面的文件提取出来
 
-{% highlight Bash shell scripts %}
+{% highlight Bash shell scripts linenos %}
 cd ~/Desktop/
 cp /usr/sbin/mDNSResponder .
 cp /usr/sbin/mDNSResponderHelper .
@@ -35,7 +35,7 @@ cp /System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist .
 
 ### 当然，如果你有 Time Machine备份也可以
 
-{% highlight Bash shell scripts %}
+{% highlight Bash shell scripts linenos %}
 cd /Volumes/Time Machine Backups/Backups.backupdb/
 cd <my machine name>
 ls
@@ -49,7 +49,7 @@ cp System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist ~/Desktop/
 
 ### 然后把提取出来的文件放到OSX 10.10中
 
-{% highlight Bash shell scripts %}
+{% highlight Bash shell scripts linenos %}
 sudo cp mDNSResponder /usr/sbin/
 sudo cp mDNSResponderHelper /usr/sbin/
 sudo cp com.apple.mDNSResponder.plist /System/Library/LaunchDaemons/
@@ -58,7 +58,7 @@ sudo cp com.apple.mDNSResponderHelper.plist /System/Library/LaunchDaemons/
 
 ### 最后，修改系统使用mDNSResponder进行解析
 
-{% highlight Bash shell scripts %}
+{% highlight Bash shell scripts linenos %}
 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.discoveryd.plist
 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.discoveryd_helper.plist
 sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
@@ -69,7 +69,7 @@ sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponderHelp
 
 当然，如果你要恢复使用discoveryd，也很简单
 
-{% highlight Bash shell scripts %}
+{% highlight Bash shell scripts linenos %}
 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
 sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist
 sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.discoveryd.plist
