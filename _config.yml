@@ -4,7 +4,7 @@ email: wy315700@163.com
 description: 天外之音的博客
 foot_description: 千千世界 静静倾听 天外之音
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://127.0.0.1:4000" # the base hostname & protocol for your site
+url: "http://www.tianwaihome.com # the base hostname & protocol for your site
 #twitter_username: wy315700
 github_username:  wy315700
 
