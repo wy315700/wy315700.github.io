@@ -1,6 +1,5 @@
 ---
 # Remember to set url in your _config.yml file!
-layout: nil
 title : Sitemap
 ---
 <?xml version="1.0" encoding="UTF-8"?>
