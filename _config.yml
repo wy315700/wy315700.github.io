@@ -14,4 +14,3 @@ permalink: /:year/:month/:title.html
 timezone: Asia/Shanghai
 #markdown: redcarpet
 highlighter: pygments
-pygments: true
