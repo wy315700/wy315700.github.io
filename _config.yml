@@ -11,6 +11,6 @@ github_username:  wy315700
 # Build settings
 markdown: kramdown
 permalink: /:year/:month/:title.html
-timezone: Asia/Shanghai
+timezone: UTC
 #markdown: redcarpet
 highlighter: pygments

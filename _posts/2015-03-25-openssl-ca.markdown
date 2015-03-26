@@ -7,7 +7,7 @@ categories: web
 
 OpenSSL的用法网上有一大堆，大多讲的特别繁琐，在这里将使用OpenSSL建立CA的过程记录一下。
 
-## 生成 RSA 密钥对
+## 生成 RSA 密钥对 {#generate-key}
 
 第一步是建立密钥对：
 
@@ -17,7 +17,7 @@ $ openssl genrsa -out cakey.pem 2048
 
 若想对私钥进行加密可以用 `-des3` 参数
 
-## 生成 CA 证书请求
+## 生成 CA 证书请求 {#generate-request}
 
 {% highlight Bash shell scripts %}
 openssl req -new -days 365 -key -sha256 cakey.pem -out careq.pem

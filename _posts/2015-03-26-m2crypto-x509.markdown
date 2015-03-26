@@ -1,0 +1,144 @@
+---
+layout: post
+title:  "M2Crypto操作X509证书"
+date:   2015-03-26 10:15:12
+categories: web
+---
+
+在Python的所有OpenSSL封装里，这个库是最好用最完全的。
+
+其中的 `M2Crypto.X509` 则是对X509的一个封装，下面就来看看如何使用M2Crypto操作X509证书。
+
+关于M2Crypto，完整的API可以看这里：[http://www.heikkitoivonen.net/m2crypto/api/](http://www.heikkitoivonen.net/m2crypto/api/)
+
+一般来说，产生一张X509证书的过程如下：
+
+1. 申请者生成非对称加密算法的密钥，如RSA，DSA还有最新流行的ECC等。
+2. 申请者生成电子证书请求文件(X509_Request)。其中包含申请者的身份信息、公钥，并且用自己的私钥签名。
+3. CA读取电子证书请求文件。核查身份信息是否正确。如果身份信息正确就对电子证书进行签名。其中包含CA的身份信息、申请者的身份信息、申请者的公钥、电子证书的起始有效时间，电子证书的结束有效时间。通常还会记录这是CA所颁发的第几个证书。
+
+
+### 产生私钥
+
+可以使用[OpenSSL命令产生私钥]({% post_url 2015-03-25-openssl-ca %}#generate-key)或者使用M2Crypto来产生：
+
+{% highlight Python %}
+#此函数生成一个2048位的RSA密钥，将其转化成PEM格式返回
+from M2Crypto import *
+def genrsa(self):
+    bio=BIO.MemoryBuffer()
+    rsa=RSA.gen_key(2048, 65537, lambda *arg:None)
+    rsa.save_key_bio(bio, None)
+    return bio.read_all()
+{% endhighlight %}
+
+其中的 `2048` 指的是密钥位数，65537是生成因子，据OpenSSL的文档说，这个函数通常是三个奇数 `3` , `17` , `65537` 之一，而在使用OpenSSL命令生成私钥的时候，可以看出往往使用的是65537。
+
+### 生成证书请求
+
+可以使用[OpenSSL来生成证书请求]({% post_url 2015-03-25-openssl-ca %}#generate-request)或者使用M2Crypto来生成
+
+{% highlight Python %}
+from M2Crypto import *
+
+#首先载入密钥文件。此文件同时保存了申请者的私钥与公钥。
+pkey_str=file("prikey.pem", "rb").read()
+pkey=EVP.load_key_string(pkey_str, util.no_passphrase_callback)
+req=X509.Request()
+req.set_pubkey(pkey) #包含公钥
+#req.set_version(1)
+
+#身份信息不是简单的字符串。而是X509_Name对象。
+name=X509.X509_Name()
+
+#CN是Common Name的意思。如果是一个网站的电子证书，就要写成网站的域名
+name.CN="WangYang"
+
+#Organization Unit，通常是指部门吧，组织内单元
+name.OU="SKLOIS"
+
+#Organization。通常是指公司
+name.O="IIE"
+
+#State or Province。州或者省
+name.ST="Beijing"
+
+#Locale。
+name.L="Beijing"
+
+#国家。不能直接写国家名字，比如China之类的，而应该是国家代码。
+#CN代表中国。US代表美国，JP代表日本
+name.C="CN"
+
+req.set_subject(name) #包含通信节点的身份信息
+req.sign(pkey, "sha256") #使用通信节点的密钥进行签名，sha1已经不安全了，这里使用sha256
+file("req.pem", "wb").write(req.as_pem()) #写入到文件
+{% endhighlight %}
+
+### CA签发证书
+
+[关于如何产生一个CA]({% post_url 2015-03-25-openssl-ca %})
+
+{% highlight Python %}
+from M2Crypto import *
+import time
+
+#首先读取证书请求文件。
+req_str=file("req.pem", "rb").read()
+
+#返回一个X509.Request类型代表证书请求文件
+req=X509.load_request_string(req_str)
+
+#首先验证一下，是不是真的是使用它本身的私钥签名的。
+#如果是，返回非0值。如果不是，说明这是一个非法的证书请求文件。
+print req.verify(req.get_pubkey())
+
+#接下来载入CA的电子证书。与CA的密钥不一样，CA的电子证书包含了CA的身份信息。
+#CA的电子证书会分发给各个通信节点。
+ca_str=file("ca.pem", "rb").read()
+ca=X509.load_cert_string(ca_str)
+
+#可以使用check_ca()方法判断这个证书文件是不是CA。
+#本质是判断它是不是自签名。如果是的话，就返回非0值。如果不是的话就返回0。
+print ca.check_ca()
+
+#接下来载入CA的密钥
+cakey_str=file("cakey.pem", "rb").read()
+
+#一般CA的密钥要加密保存。回调函数返回密码
+cakey=EVP.load_key_string(cakey_str, lambda *args:"1234")
+
+#接下来开始生成电子证书
+cert=X509.X509()
+
+#首先，设定开始生效时间与结束生效时间
+t = long(time.time()) + time.timezone #当前时间，单位是秒
+
+#开始生效时间。证书的时间类型不是普通的Python datetime类型。
+now = ASN1.ASN1_UTCTIME()
+now.set_time(t)
+nowPlusYear = ASN1.ASN1_UTCTIME() #结束生效时间
+nowPlusYear.set_time(t + 60 * 60 * 24 * 365) #一年以后。
+cert.set_not_before(now)
+cert.set_not_after(nowPlusYear)
+
+#把证书请求附带的身份信息复制过来
+cert.set_subject(req.get_subject())
+
+#设置颁发者的身份信息，把CA电子证书内身份信息复制过来
+cert.set_issuer(ca.get_subject())
+
+#序列号是指，CA颁发的第几个电子证书文件
+cert.set_serial_number(2)
+
+#把证书请求内的公钥复制过来
+cert.set_pubkey(req.get_pubkey())
+
+#使用CA的秘钥进行签名。
+cert.sign(cakey, "sha1")
+file("cert.pem", "wb").write(cert.as_pem())#保存文件。
+{% endhighlight %}
+
+接下来我们就可以看到一张由我们的CA签发的证书了。
+
+![证书](/uploads/2015/03/20150326102938.png)
