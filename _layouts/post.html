@@ -7,12 +7,6 @@ layout: default
     <h1 class="post-title">{{ page.title }}</h1>
     <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
   </header>
-
-  <article class="post-content">
-    {{ content }}
-  </article>
-  <p>转载请注明来源：{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}。
-  </p>
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <!-- 博客，横幅 -->
   <ins class="adsbygoogle"
@@ -22,6 +16,12 @@ layout: default
   <script>
   (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
+
+  <article class="post-content">
+    {{ content }}
+  </article>
+  <p>转载请注明来源：{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}。
+  </p>
 </div>
 <div id="related">
   <h4>Related Posts</h4>
