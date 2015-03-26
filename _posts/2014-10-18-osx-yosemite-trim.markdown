@@ -14,8 +14,6 @@ categories: Mac
 
 相比较 [OSX 10.9开启Trim]({% post_url 2014-07-02-mac-osx-10-9-4-trim %})的步骤来说，差不多，但是要重启两步，下面见代码
 
-{% gist return1/4058659 %}
-
 {% highlight Bash shell scripts linenos %}
 #
 # Original version by Grant Parnell is offline (http://digitaldj.net/2011/07/21/trim-enabler-for-lion/)
