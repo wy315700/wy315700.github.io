@@ -20,7 +20,7 @@ $ openssl genrsa -out cakey.pem 2048
 ## 生成 CA 证书请求 {#generate-request}
 
 {% highlight Bash shell scripts %}
-openssl req -new -days 365 -key -sha256 cakey.pem -out careq.pem
+openssl req -new -days 365 -sha256 -key cakey.pem -out careq.pem
 {% endhighlight %}
 
 现在都是sha256了，sha1已经被证明是不安全的东西了。
