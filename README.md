@@ -1,2 +1,2 @@
-# wy315700.github.io
+# wy315700
 Jekyll source for my personal blog
