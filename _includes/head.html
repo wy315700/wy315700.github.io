@@ -8,7 +8,7 @@
         <meta http-equiv="refresh" content="3; url=/">
     {% endif %}
     <meta name="description" content="{{ site.description }}">
-    <meta name="keywords" content="天外之家,千千世界,静静倾听,天外之音,博客,编程,php,linux">
+    <meta name="keywords" content="天外之家,千千世界,静静倾听,天外之音,博客,编程,php,linux,{% if page.keywords %}{{ page.keywords }}{% endif %}">
     <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     <script src="/assets/jquery-1.9.1.min.js"></script>
