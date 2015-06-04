@@ -5,7 +5,7 @@ date:   2015-05-14 15:00:12
 categories: Android
 ---
 
-今天研究怎么把OpenSSL编译成Android原生库，记录一下。
+ 今天研究怎么把OpenSSL编译成Android原生库，记录一下。
 
 ## 1 安装NDK
 
