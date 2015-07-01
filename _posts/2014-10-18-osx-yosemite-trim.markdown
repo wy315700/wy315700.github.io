@@ -4,6 +4,15 @@ title:  "OSX Yosemite (10.10) 手动开启Trim"
 date:   2014-10-18 10:56:12
 categories: Mac
 ---
+
+<font color="red">2015年7月1号更新，今天苹果发布了OS X 10.10.4，原生支持第三方SSD了。使用以下命令可以简单的开启Trim功能，当然只支持部分SSD。</font>
+
+{% highlight Bash shell scripts %}
+sudo trimforce enable 
+{% endhighlight %}
+
+
+
 <font color="red">2015年4月19号更新，今天苹果发布了OS X 10.10.3，按以下方法运行命令就行了。</font>
 {% highlight Bash shell scripts %}
 sudo cp /System/Library/Extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS/IOAHCIBlockStorage /System/Library/Extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS/IOAHCIBlockStorage.original
