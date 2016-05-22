@@ -26,4 +26,4 @@ class HealthHandler(tornado.web.RequestHandler):
             raise tornado.web.HTTPError(404)
 {% endhighlight %}
 
-当然，后端程序要有多个实例才可以这么做，如果只有一个实例的话，其实你也不需要ULB。
+如此一来，每次部署程序的时候只要挨个重启后端服务就行了，不需要登录控制台操作ULB了。
