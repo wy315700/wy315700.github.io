@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "使用ULB的时候如何优雅的启动后端服务程序"
-date:   2016-05-22 20:56:12
+date:   2016-05-21 20:56:12
 categories: Linux
 ---
 
@@ -27,3 +27,4 @@ class HealthHandler(tornado.web.RequestHandler):
 {% endhighlight %}
 
 如此一来，每次部署程序的时候只要挨个重启后端服务就行了，不需要登录控制台操作ULB了。
+
